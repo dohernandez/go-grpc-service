@@ -248,3 +248,7 @@ func (l *Locator) Close() error {
 func (l *Locator) GRPCAddr() string {
 	return l.GRPCService.Addr()
 }
+
+func (l *Locator) Logger() ctxd.Logger {
+	return l.LoggerProvider.CtxdLogger()
+}
