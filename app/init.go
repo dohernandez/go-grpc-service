@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+
 	"github.com/bool64/ctxd"
 	"github.com/bool64/sqluct"
 	"github.com/bool64/zapctxd"
@@ -242,4 +243,8 @@ func (l *Locator) Close() error {
 	}
 
 	return nil
+}
+
+func (l *Locator) GRPCAddr() string {
+	return l.GRPCService.Addr()
 }

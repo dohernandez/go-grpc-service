@@ -34,6 +34,7 @@ require (
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/bool64/httpmock v0.1.13 // indirect
 	github.com/bool64/shared v0.1.5 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
@@ -43,7 +44,6 @@ require (
 	github.com/go-chi/chi/v5 v5.1.0 // indirect
 	github.com/gofrs/uuid v4.4.0+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
-	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.24.0 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
@@ -71,12 +71,8 @@ require (
 	github.com/shurcooL/httpgzip v0.0.0-20230704072819-d1585fc322fa // indirect
 	github.com/swaggest/assertjson v1.9.0 // indirect
 	github.com/swaggest/form/v5 v5.1.1 // indirect
-	github.com/swaggest/jsonschema-go v0.3.72 // indirect
-	github.com/swaggest/openapi-go v0.2.54 // indirect
-	github.com/swaggest/refl v1.3.0 // indirect
 	github.com/swaggest/rest v0.2.69 // indirect
 	github.com/swaggest/swgui v1.8.2 // indirect
-	github.com/swaggest/usecase v1.3.1 // indirect
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
 	github.com/yosuke-furukawa/json5 v0.1.2-0.20201207051438-cf7bb3f354ff // indirect
 	github.com/yudai/gojsondiff v1.0.0 // indirect
@@ -94,6 +90,5 @@ require (
 	google.golang.org/grpc v1.68.1 // indirect
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.5.1 // indirect
 	google.golang.org/protobuf v1.35.2 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
