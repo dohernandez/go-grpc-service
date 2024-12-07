@@ -4,7 +4,7 @@ GO ?= go
 BUILD_LDFLAGS ?= ""
 INTEGRATION_TEST_TARGET ?= -coverpkg ./internal/... integration_test.go
 INTEGRATION_DOCKER_COMPOSE ?= ./docker-compose.yml
-INTEGRATION_DOCKER_COMPOSE_PROFILE ?= integration-test
+INTEGRATION_DOCKER_COMPOSE_PROFILE ?= ""
 
 ## Run integration tests
 test-integration:

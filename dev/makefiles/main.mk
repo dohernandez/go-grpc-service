@@ -53,22 +53,3 @@ DEVSERVICEGO_PATH := $(DEVSERVICEGO_PATH)/dev
 DEVSERVICEGO_SCRIPTS ?= $(DEVSERVICEGO_PATH)/scripts
 
 -include $(DEVGO_PATH)/makefiles/main.mk
-
-## Run tests
-test: test-unit
-
-## Check the commit compile and test the change
-check: lint test
-
-## Install all require tools to work with the project
-tools: protoc-cli mockery-cli
-
-## Runs commands described by directives within existing files, usage: "make generate SOURCE=<file.go... | packages>"
-generate: protoc-cli mockery-cli
-	@echo "Running go generate $(or $(SOURCE),./...)"
-	@go generate $(or $(SOURCE),./...)
-
-## Generate code from proto file(s) and swagger file
-proto-gen: proto-gen-code-swagger
-	@cat $(SWAGGER_PATH)/service.swagger.json | jq del\(.paths[][].responses.'"default"'\) > $(SWAGGER_PATH)/service.swagger.json.tmp
-	@mv $(SWAGGER_PATH)/service.swagger.json.tmp $(SWAGGER_PATH)/service.swagger.json
