@@ -10,6 +10,7 @@ import (
 	"github.com/bool64/ctxd"
 	"github.com/bool64/sqluct"
 	"github.com/cenkalti/backoff/v4"
+	_ "github.com/jackc/pgx/v5/stdlib" // Postgres driver
 	"github.com/jmoiron/sqlx"
 	"github.com/opencensus-integrations/ocsql"
 )
