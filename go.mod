@@ -9,6 +9,7 @@ require (
 	github.com/bool64/dev v0.2.37
 	github.com/bool64/godogx v0.1.1
 	github.com/bool64/httpdog v0.2.1
+	github.com/bool64/httptestbench v0.1.4
 	github.com/bool64/sqluct v0.2.4
 	github.com/bool64/zapctxd v1.2.0
 	github.com/cenkalti/backoff/v4 v4.3.0
@@ -33,6 +34,7 @@ require (
 )
 
 require (
+	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bool64/httpmock v0.1.15 // indirect
 	github.com/bool64/shared v0.1.5 // indirect
@@ -73,7 +75,9 @@ require (
 	github.com/swaggest/form/v5 v5.1.1 // indirect
 	github.com/swaggest/rest v0.2.69 // indirect
 	github.com/swaggest/swgui v1.8.2 // indirect
-	github.com/vasi-stripe/gogroup v0.0.0-20200806161525-b5d7f67a97b5 // indirect
+	github.com/valyala/bytebufferpool v1.0.0 // indirect
+	github.com/valyala/fasthttp v1.36.0 // indirect
+	github.com/vearutop/dynhist-go v1.1.0 // indirect
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
 	github.com/yosuke-furukawa/json5 v0.1.2-0.20201207051438-cf7bb3f354ff // indirect
 	github.com/yudai/gojsondiff v1.0.0 // indirect
@@ -81,7 +85,6 @@ require (
 	go.opencensus.io v0.24.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.30.0 // indirect
-	golang.org/x/mod v0.22.0 // indirect
 	golang.org/x/net v0.32.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect

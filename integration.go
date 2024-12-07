@@ -2,20 +2,16 @@ package go_grpc_service
 
 import (
 	"context"
-	"testing"
-	"time"
-
-	"github.com/bool64/ctxd"
 	"github.com/bool64/dbdog"
 	"github.com/bool64/httpdog"
 	"github.com/bool64/sqluct"
 	"github.com/cucumber/godog"
 	"github.com/dohernandez/go-grpc-service/app"
-	"github.com/dohernandez/go-grpc-service/must"
 	"github.com/dohernandez/go-grpc-service/test/feature"
 	dbdogcleaner "github.com/dohernandez/go-grpc-service/test/feature/database"
-	"github.com/dohernandez/goservicing"
 	"github.com/nhatthm/clockdog"
+	"testing"
+	"time"
 )
 
 type FeaturesConfig struct {
@@ -31,33 +27,32 @@ func RunFeatures(t *testing.T, ctx context.Context, cfg FeaturesConfig) {
 	deps := cfg.Locator
 
 	clock := clockdog.New()
-
 	deps.ClockProvider = clock
+
+	stop, errch := RunServicesTesting(t, ctx, deps)
+
+	var baseRESTURL string
+
+	select {
+	case err := <-errch:
+		if err != nil {
+			t.Fatalf("failed to run service: %v", err)
+		}
+	case baseRESTURL = <-deps.GRPCRestService.AddrAssigned:
+		break
+	case <-time.After(timeout):
+		t.Fatal("timeout waiting for service to start")
+	}
+
+	defer func() {
+		// Stop the service.
+		stop()
+	}()
+
+	local := httpdog.NewLocal(baseRESTURL)
 
 	dbm := initDBManager(deps.Storage, cfg.Tables)
 	dbmCleaner := initDBMCleaner(dbm)
-
-	services := goservicing.WithGracefulShutDown(
-		func(ctx context.Context) {
-			_ = deps.Close() //nolint:errcheck
-		},
-	)
-
-	go func() {
-		err := services.Start(
-			ctx,
-			time.Second*5,
-			func(ctx context.Context, msg string) {
-				deps.CtxdLogger().Important(ctx, msg)
-			},
-			deps.GRPCService,
-			deps.GRPCRestService,
-		)
-		must.NotFail(ctxd.WrapError(ctx, err, "failed to start the services"))
-	}()
-
-	baseRESTURL := <-deps.GRPCRestService.AddrAssigned
-	local := httpdog.NewLocal(baseRESTURL)
 
 	feature.RunFeatures(t, cfg.FeaturePath, func(_ *testing.T, s *godog.ScenarioContext) {
 		local.RegisterSteps(s)
@@ -69,8 +64,6 @@ func RunFeatures(t *testing.T, ctx context.Context, cfg FeaturesConfig) {
 
 		cfg.FeatureContextFunc(t, s)
 	})
-
-	must.NotFail(services.Close())
 }
 
 func initDBManager(storage *sqluct.Storage, tables map[string]any) *dbdog.Manager {
