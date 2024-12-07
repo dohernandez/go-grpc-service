@@ -23,7 +23,7 @@ type BenchmarkCases struct {
 
 type BenchmarkConfig struct {
 	Locator   *app.Locator
-	testCases func() []BenchmarkCases
+	TestCases func() []BenchmarkCases
 }
 
 // RunBenchmark for performance benchmarking.
@@ -53,7 +53,7 @@ func RunBenchmark(b *testing.B, ctx context.Context, cfg *BenchmarkConfig) {
 		stop()
 	}()
 
-	tests := cfg.testCases()
+	tests := cfg.TestCases()
 
 	for _, tt := range tests {
 		requestURI := "http://" + baseRESTURL + tt.Uri
