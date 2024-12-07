@@ -46,6 +46,14 @@ $(foreach module,$(MODULES), \
     ) \
 )
 
+# Detecting GOPATH and removing trailing "/" if any
+GOPATH = $(realpath $(shell $(GO) env GOPATH))
+
+ifneq "$(wildcard ./vendor )" ""
+  modVendor = -mod=vendor
+endif
+export MODULE_NAME := $(shell test -f go.mod && GO111MODULE=on $(GO) list $(modVendor) -m)
+
 # If DEVSERVICEGO_PATH is not exported, it is because we are in the root project therefore PWD.
 DEVSERVICEGO_PATH ?= $(PWD)
 
