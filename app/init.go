@@ -16,8 +16,6 @@ import (
 	clockSrv "github.com/nhatthm/go-clock/service"
 )
 
-const pgxDriver = "pgx"
-
 // Option sets up service locator.
 type Option func(l *Locator)
 

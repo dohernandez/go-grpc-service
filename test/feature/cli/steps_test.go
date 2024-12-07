@@ -2,12 +2,12 @@ package cli_test
 
 import (
 	"bytes"
-	"github.com/dohernandez/go-grpc-service/test/feature/cli"
-	"github.com/dohernandez/go-grpc-service/test/feature/cli/testdata"
 	"testing"
 	"time"
 
 	"github.com/cucumber/godog"
+	"github.com/dohernandez/go-grpc-service/test/feature/cli"
+	"github.com/dohernandez/go-grpc-service/test/feature/cli/testdata"
 )
 
 func TestNewContext(t *testing.T) {

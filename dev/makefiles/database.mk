@@ -18,6 +18,6 @@ migrate-down: migrate-cli
 
 ## Check/install migrations tool
 migrate-cli:
-	@bash $(APP_SCRIPTS)/migrate-cli.sh
+	@bash $(DEVSERVICEGO_SCRIPTS)/migrate-cli.sh
 
 .PHONY: create-migration migrate migrate-cli

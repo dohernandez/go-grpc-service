@@ -5,6 +5,6 @@ package dev
 //
 // See https://github.com/golang/go/issues/26366.
 import (
-	_ "github.com/dohernandez/go-grpc-service/dev/makefiles"
+	_ "github.com/dohernandez/go-grpc-service/dev/makefiles" // Include dev to project.
 	_ "github.com/dohernandez/go-grpc-service/dev/scripts"
 )

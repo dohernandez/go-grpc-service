@@ -1,7 +1,5 @@
 GO ?= go
 
--include $(DEVSERVICEGO_PATH)/dev/makefiles/docker.mk
-
 # Override in app Makefile to add custom ldflags, example BUILD_LDFLAGS="-s -w"
 BUILD_LDFLAGS ?= ""
 INTEGRATION_TEST_TARGET ?= -coverpkg ./internal/... integration_test.go

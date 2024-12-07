@@ -13,14 +13,10 @@ MODULES := \
 -include $(DEVGO_PATH)/makefiles/lint.mk
 -include $(DEVGO_PATH)/makefiles/test-unit.mk
 
+-include $(PWD)/dev/makefiles/docker.mk
 -include $(PWD)/dev/makefiles/test-integration.mk
+-include $(PWD)/dev/makefiles/mockery.mk
 
 # Add your custom targets here.
 
-PHONY: test
-
-## Run tests
-test: test-unit
-
-## Check the commit compile and test the change.
-check: lint test
+PHONY:

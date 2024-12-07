@@ -39,7 +39,7 @@ func RunFeatures(t *testing.T, ctx context.Context, cfg FeaturesConfig) {
 
 	services := goservicing.WithGracefulShutDown(
 		func(ctx context.Context) {
-			deps.Close() //nolint:errcheck
+			_ = deps.Close() //nolint:errcheck
 		},
 	)
 

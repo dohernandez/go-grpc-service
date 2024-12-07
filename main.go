@@ -13,7 +13,7 @@ import (
 func Run(ctx context.Context, l *app.Locator) {
 	services := goservicing.WithGracefulShutDown(
 		func(ctx context.Context) {
-			l.Close() //nolint:errcheck
+			_ = l.Close() //nolint:errcheck
 		},
 	)
 

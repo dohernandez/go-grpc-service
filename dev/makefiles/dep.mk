@@ -19,7 +19,7 @@ deps:
 ## Run with .env vars
 env: envfile
 	@echo ">> running with .env"
-	@bash $(APP_SCRIPTS)/env-run.sh make $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+	@bash $(DEVSERVICEGO_SCRIPTS)/env-run.sh make $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 	@kill -3 $$PPID
 	@echo "Job done, stopping make, please disregard following 'make: *** [env] Error 1'"
 	@exit 1
