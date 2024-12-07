@@ -34,7 +34,7 @@ require (
 )
 
 require (
-	github.com/andybalholm/brotli v1.0.4 // indirect
+	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bool64/httpmock v0.1.15 // indirect
 	github.com/bool64/shared v0.1.5 // indirect
@@ -73,11 +73,15 @@ require (
 	github.com/shurcooL/httpgzip v0.0.0-20230704072819-d1585fc322fa // indirect
 	github.com/swaggest/assertjson v1.9.0 // indirect
 	github.com/swaggest/form/v5 v5.1.1 // indirect
-	github.com/swaggest/rest v0.2.69 // indirect
+	github.com/swaggest/jsonschema-go v0.3.72 // indirect
+	github.com/swaggest/openapi-go v0.2.54 // indirect
+	github.com/swaggest/refl v1.3.0 // indirect
+	github.com/swaggest/rest v0.2.70 // indirect
 	github.com/swaggest/swgui v1.8.2 // indirect
+	github.com/swaggest/usecase v1.3.1 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasthttp v1.36.0 // indirect
-	github.com/vearutop/dynhist-go v1.1.0 // indirect
+	github.com/valyala/fasthttp v1.57.0 // indirect
+	github.com/vearutop/dynhist-go v1.2.3 // indirect
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
 	github.com/yosuke-furukawa/json5 v0.1.2-0.20201207051438-cf7bb3f354ff // indirect
 	github.com/yudai/gojsondiff v1.0.0 // indirect
@@ -95,5 +99,6 @@ require (
 	google.golang.org/grpc v1.68.1 // indirect
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.5.1 // indirect
 	google.golang.org/protobuf v1.35.2 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
