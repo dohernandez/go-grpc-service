@@ -24,7 +24,9 @@ DOCKER_COMPOSE_PROFILE ?= ""
 DOCKER_SECRET ?= false
 
 
-DOCKER_COMPOSE_OPTIONS=-f $(DOCKER_COMPOSE_PATH) -p $(DOCKER_COMPOSE_PROJECT_NAME) $(if $(PROFILE),--profile $(PROFILE),$(if $(DOCKER_COMPOSE_PROFILE),--profile $(DOCKER_COMPOSE_PROFILE)))
+DOCKER_COMPOSE_OPTIONS=$(foreach file,$(DOCKER_COMPOSE_PATH),-f $(file)) \
+    -p $(DOCKER_COMPOSE_PROJECT_NAME) \
+    $(if $(PROFILE),--profile $(PROFILE),$(if $(DOCKER_COMPOSE_PROFILE),--profile $(DOCKER_COMPOSE_PROFILE)))
 
 ## Build docker image
 build-image:
@@ -38,24 +40,46 @@ build-image:
 ## Run docker-compose up from file DOCKER_COMPOSE_PATH with project name DOCKER_COMPOSE_PROJECT_NAME and profile DOCKER_COMPOSE_PROFILE.
 ## Usage: "make dc-up PROFILE=<profile>, if PROFILE is not provide, start only default services"
 dc-up:
-	@test ! -f $(DOCKER_COMPOSE_PATH) || \
-	(command -v docker-compose >/dev/null 2>&1 && \
-	docker-compose $(DOCKER_COMPOSE_UP_OPTIONS) up -d --remove-orphans || \
-	docker compose $(DOCKER_COMPOSE_UP_OPTIONS) up -d --remove-orphans)
+	@for file in $(DOCKER_COMPOSE_PATH); do \
+	  if [ ! -f $$file ]; then \
+	    echo "Error: File $$file not found!"; \
+	    exit 1; \
+	  fi; \
+	done; \
+	if command -v docker-compose >/dev/null 2>&1; then \
+	  docker-compose $(DOCKER_COMPOSE_OPTIONS) up -d --remove-orphans; \
+	else \
+	  docker compose $(DOCKER_COMPOSE_OPTIONS) up -d --remove-orphans; \
+	fi
+
 
 ## Run docker-compose down from file DOCKER_COMPOSE_PATH with project name DOCKER_COMPOSE_PROJECT_NAME
 dc-down:
-	@test ! -f $(DOCKER_COMPOSE_PATH) || \
-	(command -v docker-compose >/dev/null 2>&1 && \
-	docker-compose $(DOCKER_COMPOSE_OPTIONS_COMMAND) || \
-	docker compose $(DOCKER_COMPOSE_OPTIONS_COMMAND)) down -v
+	@for file in $(DOCKER_COMPOSE_PATH); do \
+	  if [ ! -f $$file ]; then \
+		echo "Error: File $$file not found!"; \
+		exit 1; \
+	  fi; \
+	done; \
+	if command -v docker-compose >/dev/null 2>&1; then \
+	  docker-compose $(DOCKER_COMPOSE_OPTIONS) down -v; \
+	else \
+	  docker compose $(DOCKER_COMPOSE_OPTIONS) down -v; \
+	fi
 
 ## Run docker-compose logs from file DOCKER_COMPOSE_PATH with project name DOCKER_COMPOSE_PROJECT_NAME. Usage: "make generate APP=<docker-composer-service-name>"
 dc-logs:
-	@test ! -f $(DOCKER_COMPOSE_PATH) || \
-	(command -v docker-compose >/dev/null 2>&1 && \
-	docker-compose $(DOCKER_COMPOSE_OPTIONS_COMMAND) || \
-	docker compose $(DOCKER_COMPOSE_OPTIONS_COMMAND)) logs $(APP)
+	@for file in $(DOCKER_COMPOSE_PATH); do \
+	  if [ ! -f $$file ]; then \
+		echo "Error: File $$file not found!"; \
+		exit 1; \
+	  fi; \
+	done; \
+	if command -v docker-compose >/dev/null 2>&1; then \
+	  docker-compose $(DOCKER_COMPOSE_OPTIONS) logs $(APP); \
+	else \
+	  docker compose $(DOCKER_COMPOSE_OPTIONS) logs $(APP); \
+	fi
 
 
 .PHONY: build-image dc-up dc-down dc-logs

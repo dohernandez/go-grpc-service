@@ -16,10 +16,6 @@ export GO111MODULE = on
 
 PWD = $(shell pwd)
 
-ifneq "$(GOFLAGS)" ""
-  $(info GOFLAGS: ${GOFLAGS})
-endif
-
 # Use vendored dependencies if available.
 ifneq ($(wildcard ./vendor),)
   modVendor := -mod=vendor
