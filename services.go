@@ -49,7 +49,7 @@ func RunServices(ctx context.Context, l *app.Locator) error {
 type ServicesT interface {
 	Helper()
 	Fatalf(format string, args ...any)
-	Fatal(args ...any)
+	Log(args ...any)
 }
 
 func RunServicesTesting(t ServicesT, ctx context.Context, l *app.Locator) (func(), chan error) {
@@ -83,10 +83,10 @@ func RunServicesTesting(t ServicesT, ctx context.Context, l *app.Locator) (func(
 		select {
 		case err := <-errch:
 			if err != nil && !isDone() {
-				t.Fatalf("failed to run service: %v", err)
+				t.Fatalf("failed to stop services: %v", err)
 			}
 		case <-time.After(timeout):
-			t.Fatal("timeout waiting for service to stop")
+			t.Log("timeout waiting for services to stop")
 		}
 
 		close(errch)

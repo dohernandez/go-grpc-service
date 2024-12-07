@@ -3,6 +3,7 @@ package go_grpc_service
 import (
 	"context"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 
@@ -52,6 +53,8 @@ func RunBenchmark(b *testing.B, ctx context.Context, cfg *BenchmarkConfig) {
 		// Stop the service.
 		stop()
 	}()
+
+	baseRESTURL = strings.Replace(baseRESTURL, "[::]", "127.0.0.1", 1)
 
 	for _, tt := range cfg.TestCases {
 		requestURI := "http://" + baseRESTURL + tt.Uri
