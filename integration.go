@@ -21,7 +21,7 @@ type FeaturesConfig struct {
 	Tables             map[string]any
 }
 
-func RunFeatures(t *testing.T, ctx context.Context, cfg FeaturesConfig) {
+func RunFeatures(t *testing.T, ctx context.Context, cfg *FeaturesConfig) {
 	t.Helper()
 
 	deps := cfg.Locator
