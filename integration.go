@@ -3,7 +3,6 @@ package go_grpc_service
 import (
 	"context"
 	"github.com/bool64/dbdog"
-	"github.com/bool64/httpdog"
 	"github.com/bool64/sqluct"
 	"github.com/cucumber/godog"
 	"github.com/dohernandez/go-grpc-service/app"
@@ -49,7 +48,7 @@ func RunFeatures(t *testing.T, ctx context.Context, cfg *FeaturesConfig) {
 		stop()
 	}()
 
-	local := httpdog.NewLocal(baseRESTURL)
+	local := feature.NewLocal(baseRESTURL)
 
 	dbm := initDBManager(deps.Storage, cfg.Tables)
 	dbmCleaner := initDBMCleaner(dbm)
