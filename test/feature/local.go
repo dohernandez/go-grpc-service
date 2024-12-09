@@ -28,7 +28,7 @@ func NewLocal(baseURL string) *Local {
 func (l *Local) RegisterSteps(s *godog.ScenarioContext) {
 	l.Local.RegisterSteps(s)
 
-	s.Step(`^I should have response with body$`, l.iShouldHaveResponseWithBody)
+	s.Step(`^I should have response with body like$`, l.iShouldHaveResponseWithBody)
 }
 
 func (l *Local) iShouldHaveResponseWithBody(bodyDoc *godog.DocString) error {
@@ -81,7 +81,7 @@ func (l *Local) sanitizeBodyJsonDetails(body []byte) ([]byte, error) {
 		return nil, errors.New("received invalid JSON5 body")
 	}
 
-	received := l.Client.Details().ReqBody
+	received := l.Client.Details().RespBody
 
 	// sort both arrays to make comparison predictable
 	var bDecoded, recDecoded any
