@@ -1,7 +1,10 @@
 GO ?= go
 UNIT_TEST_COUNT ?= 2
 
-TEST_PACKAGES := $(shell $(GO) list ./... | grep -v '/mocks' | grep -v '/pb' | grep -v '/cmd')
+# Override in app Makefile to exclude specific package from the test and coverage, example EXCLUDE_PACKAGES=/mocks|/pb|/cmd
+EXCLUDE_PACKAGES ?= ""
+
+TEST_PACKAGES := $(shell $(GO) list ./... | grep -vE '$(EXCLUDE_PACKAGES)')
 
 ## Run unit tests
 test-unit:

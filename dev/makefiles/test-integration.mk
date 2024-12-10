@@ -4,7 +4,7 @@ GO ?= go
 
 # Override in app Makefile to add custom ldflags, example BUILD_LDFLAGS="-s -w"
 BUILD_LDFLAGS ?= ""
-# Override in app Makefile to run specific feature, example FEATURES="get"
+# Override in app Makefile to run specific feature, example FEATURES=get
 FEATURES ?= ""
 
 INTEGRATION_TEST_TARGET ?= -coverpkg ./internal/... integration_test.go $(if $(FEATURES),--features $(FEATURES),"")
