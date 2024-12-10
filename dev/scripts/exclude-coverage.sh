@@ -5,7 +5,7 @@ if [ ! -f ./exclude-coverage.txt ]; then
   exit 0
 fi
 
-# Process each line in exclude-coverage.txt
-while read -r p || [ -n "$p" ]; do
-  sed -i '' "/${p//\//\\/}/d" ./coverage.out
-done < ./exclude-coverage.txt
+# Process each non-empty, non-comment line in exclude-coverage.txt
+grep -v -E '^\s*#|^\s*$' ./exclude-coverage | while read -r p || [ -n "$p" ]; do
+  sed -i '' "/${p//\//\\/}/d" ./integration.coverprofile
+done
