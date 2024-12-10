@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Check if exclude-coverage.txt exists
 if [ ! -f ./exclude-coverage.txt ]; then
