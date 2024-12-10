@@ -7,5 +7,6 @@ fi
 
 # Process each non-empty, non-comment line in exclude-coverage.txt
 grep -v -E '^\s*#|^\s*$' ./integration-exclude.coverpkg | while read -r p || [ -n "$p" ]; do
-  sed -i '' "/${p//\//\\/}/d" ./integration.coverprofile
+  # Use sed to remove matching lines from the coverage file
+  sed -i '' "/$(echo "$p" | sed 's/[&/\]/\\&/g')/d" ./integration.coverprofile
 done
