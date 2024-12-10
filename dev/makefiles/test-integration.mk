@@ -1,8 +1,13 @@
 GO ?= go
 
+# FEATURES
+
 # Override in app Makefile to add custom ldflags, example BUILD_LDFLAGS="-s -w"
 BUILD_LDFLAGS ?= ""
-INTEGRATION_TEST_TARGET ?= -coverpkg ./internal/... integration_test.go
+# Override in app Makefile to run specific feature, example FEATURES="get"
+FEATURES ?= ""
+
+INTEGRATION_TEST_TARGET ?= -coverpkg ./internal/... integration_test.go $(if $(FEATURES),--features $(FEATURES),"")
 INTEGRATION_DOCKER_COMPOSE ?= ./docker-compose.yml
 INTEGRATION_DOCKER_COMPOSE_PROFILE ?= ""
 

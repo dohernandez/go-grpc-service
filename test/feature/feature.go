@@ -10,7 +10,6 @@ import (
 	"github.com/bool64/godogx"
 	"github.com/bool64/godogx/allure"
 	"github.com/cucumber/godog"
-	"github.com/spf13/pflag"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -33,10 +32,8 @@ var (
 //
 //nolint:gochecknoinits
 func init() {
-	flagSet := pflag.CommandLine
-
-	flagSet.StringVar(&runFeature, "feature", "",
-		"Optional feature to run. Filename without the extension .feature")
+	flag.StringVar(&runFeature, "features", "",
+		"Optional features to run. Filename without the extension .feature")
 
 	flag.BoolVar(&runAllure, "allure", false,
 		"Enable allure formatter")
