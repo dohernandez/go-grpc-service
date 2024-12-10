@@ -119,6 +119,8 @@ github.com/dohernandez/goservicing v1.0.1 h1:DNUZqjD1RwLQ5kGDRHLufkA5WqiOFAavTAw
 github.com/dohernandez/goservicing v1.0.1/go.mod h1:2sr8jiJyr6+j9EdKxhJboZdtJ0SXZM6ZTz2mo9ubSKM=
 github.com/dohernandez/servers v0.12.0 h1:OKkV24YZotPgZCRoM34FF46vpK3Ts6NWAe/jwsLDmT8=
 github.com/dohernandez/servers v0.12.0/go.mod h1:vGkLHCOIXeMJsEwys/fDWp0jYqlHA6gp7HVTc/JmDvs=
+github.com/dohernandez/servers v0.12.1 h1:5yLnSJcReyYCRiodOtBztwXYsahbsPgZBqQw6Pq4abI=
+github.com/dohernandez/servers v0.12.1/go.mod h1:vGkLHCOIXeMJsEwys/fDWp0jYqlHA6gp7HVTc/JmDvs=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.4/go.mod h1:6rpuAdCZL397s3pYoYcLgu1mIlRU8Am5FuJP05cCM98=
