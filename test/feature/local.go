@@ -158,6 +158,27 @@ func commutator(left, right []interface{}) ([]interface{}, bool) {
 		return left, true
 	}
 
+	// Check if all elements are equal left and right
+	// This is to aovid a bug in lcs.New(left, right).IndexPairs()
+	// where it returns all elements equal but not all elements of the left. e.g. [1, 2, 3] and [1, 1], [3, 3]
+	var allEq bool
+
+	for _, pair := range lcsPairs {
+		if pair.Right == pair.Left {
+			allEq = true
+
+			continue
+		}
+
+		allEq = false
+		break
+	}
+
+	if allEq {
+		return left, true
+	}
+
+	// commutate the first pair of different not equal elements
 	com := make([]interface{}, len(left))
 
 	for _, pair := range lcsPairs {

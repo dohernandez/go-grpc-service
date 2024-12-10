@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+[ -z "$GOBIN" ] && GOBIN=$(go env GOPATH)/bin
+[[ ":$PATH:" != *":$GOBIN:"* ]] && PATH="${GOBIN}:${PATH}"
+
+echo "Fixing imports and fmt..."
+
+# Clearing GOFLAGS temporarily to avoid cannot query module due to -mod=vendor issues.
+GOFLAGS_SET=${GOFLAGS}
+export GOFLAGS=""
+
+[ -z "$GO" ] && GO=go
+SOURCES_TO_LINT=$(find . -name '*.go' -not -path "./vendor/*" -exec grep -L '^// Code generated .* DO NOT EDIT\.$' {} \)
+
+# checking if gogroup is available
+# gogroup enforces import grouping: https://github.com/vasi-stripe/gogroup
+if ! command -v gogroup > /dev/null ; then \
+    echo "Installing gogroup..."; \
+    $GO install github.com/vasi-stripe/gogroup/cmd/gogroup@v0.0.0-20200806161525-b5d7f67a97b5;
+fi
+
+gogroup -order std,other -rewrite ${SOURCES_TO_LINT}
+
+# checking if gofumpt is available
+# gofumpt is a drop-in replacement for gofmt with stricter formatting: https://github.com/mvdan/gofumpt
+if ! command -v gofumpt > /dev/null ; then \
+    echo "Installing gofumpt..."; \
+    $GO install mvdan.cc/gofumpt@v0.3.0;
+fi
+
+# simplify code
+gofumpt -w ${SOURCES_TO_LINT}
+
+# Restoring GOFLAGS
+export GOFLAGS=${GOFLAGS_SET}

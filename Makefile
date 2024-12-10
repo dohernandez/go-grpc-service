@@ -10,9 +10,9 @@ MODULES := \
 
 # Add your include here with based path to the module.
 
--include $(DEVGO_PATH)/makefiles/lint.mk
 -include $(DEVGO_PATH)/makefiles/test-unit.mk
 
+-include $(PWD)/dev/makefiles/lint.mk
 -include $(PWD)/dev/makefiles/docker.mk
 -include $(PWD)/dev/makefiles/test-integration.mk
 -include $(PWD)/dev/makefiles/mockery.mk

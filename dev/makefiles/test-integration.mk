@@ -12,7 +12,8 @@ test-integration:
 	DOCKER_COMPOSE_PATH=$(INTEGRATION_DOCKER_COMPOSE) \
 	make dc-up
 	@echo "Running integration tests."
-	@CGO_ENABLED=1 $(GO) test -ldflags "$(shell bash $(DEVGO_SCRIPTS)/version-ldflags.sh && echo $(BUILD_LDFLAGS))" -race -cover -coverprofile ./integration.coverprofile $(INTEGRATION_TEST_TARGET)
+	@CGO_ENABLED=1 $(GO) test -ldflags "$(shell bash $(DEVGO_SCRIPTS)/version-ldflags.sh && echo $(BUILD_LDFLAGS))" -race -cover -coverprofile ./integration.coverprofile $(INTEGRATION_TEST_TARGET) && \
+	$(DEVSERVICEGO_SCRIPTS)/exclude-from-code-coverage.sh
 
 
 .PHONY: test-integration start-deps stop-deps
