@@ -9,7 +9,7 @@ import (
 	"github.com/bool64/shared"
 	"github.com/cucumber/godog"
 	"github.com/swaggest/assertjson/json5"
-	lcs "github.com/yudai/golcs"
+	"reflect"
 	"sort"
 )
 
@@ -37,7 +37,7 @@ func (l *Local) iShouldHaveResponseWithBody(bodyDoc *godog.DocString) error {
 		return err
 	}
 
-	body, err = l.sanitizeBodyJsonDetails(body)
+	body, err = l.alignBodyIfPossible(body)
 	if err != nil {
 		return err
 	}
@@ -68,7 +68,7 @@ func loadBody(body []byte, vars *shared.Vars) ([]byte, error) {
 	return body, nil
 }
 
-func (l *Local) sanitizeBodyJsonDetails(body []byte) ([]byte, error) {
+func (l *Local) alignBodyIfPossible(body []byte) ([]byte, error) {
 	if len(body) == 0 {
 		if len(body) == 0 {
 			return nil, nil
@@ -96,42 +96,9 @@ func (l *Local) sanitizeBodyJsonDetails(body []byte) ([]byte, error) {
 		return nil, fmt.Errorf("failed to unmarshal received:\n%+v", err)
 	}
 
-	mbDecoded := bDecoded.(map[string]any)
-	mrecDecoded := recDecoded.(map[string]any)
+	bDecoded, _ = AlignLeftRightIfPossible(bDecoded, recDecoded)
 
-	names := sortedKeys(mbDecoded) // stabilize delta order
-
-	for _, name := range names {
-		if name != "details" {
-			continue
-		}
-
-		bit, ok := mbDecoded[name]
-		if !ok || bit == nil {
-			continue
-		}
-
-		eit, ok := bit.([]interface{})
-		if !ok {
-			continue
-		}
-
-		recit, ok := mrecDecoded[name]
-		if !ok || recit == nil {
-			continue
-		}
-
-		com, f := commutator(eit, recit.([]interface{}))
-		for !f {
-			eit = com
-
-			com, f = commutator(eit, recit.([]interface{}))
-		}
-
-		mbDecoded[name] = com
-	}
-
-	body, err = json.Marshal(mbDecoded)
+	body, err = json.Marshal(bDecoded)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal body:\n%+v", err)
 	}
@@ -151,54 +118,130 @@ func sortedKeys(m map[string]interface{}) (keys []string) {
 	return
 }
 
-func commutator(left, right []interface{}) ([]interface{}, bool) {
-	lcsPairs := lcs.New(left, right).IndexPairs()
-
-	if len(lcsPairs) == 0 || len(lcsPairs) == len(left) {
+func AlignLeftRightIfPossible(left, right any) (any, bool) {
+	if left == nil && right == nil {
 		return left, true
+	}
+
+	if left == nil || right == nil {
+		return left, false
+	}
+
+	switch l := left.(type) {
+	case []any:
+		r, ok := right.([]any)
+		if !ok {
+			return left, false
+		}
+
+		return alignLeftRightSlicePossible(l, r)
+
+	case map[string]any:
+		r, ok := right.(map[string]any)
+		if !ok {
+			return left, false
+		}
+
+		return alignLeftRightMapPossible(l, r)
+
+	default:
+		// Check if type are equals
+		if reflect.TypeOf(left) != reflect.TypeOf(right) {
+			return left, false
+		}
+
+		if left == right {
+			return left, true
+		}
+
+		return left, false
+	}
+}
+
+func alignLeftRightSlicePossible(left, right []any) ([]any, bool) {
+	if len(left) != len(right) {
+		return left, false
+	}
+
+	var (
+		// comm contains the common elements between left and right.
+		comm = make([]any, len(left))
+		// notComm contains the elements that are not common between left and right, but from left.
+		notComm = make([]any, 0, len(left))
+	)
+
+	for i, l := range left {
+		if reflect.DeepEqual(l, right[i]) {
+			comm[i] = l
+
+			continue
+		}
+
+		aligned, ok := AlignLeftRightIfPossible(l, right[i])
+		if ok {
+			comm[i] = aligned
+
+			continue
+		}
+
+		notComm = append(notComm, l)
 	}
 
 	// Check if all elements are equal left and right
-	// This is to aovid a bug in lcs.New(left, right).IndexPairs()
-	// where it returns all elements equal but not all elements of the left. e.g. [1, 2, 3] and [1, 1], [3, 3]
-	var allEq bool
+	if len(notComm) == 0 {
+		return comm, true
+	}
 
-	for _, pair := range lcsPairs {
-		if pair.Right == pair.Left {
-			allEq = true
+	var reo bool
 
-			continue
+	for _, n := range notComm {
+		reo = false
+
+		for i, r := range right {
+			if reflect.DeepEqual(n, r) {
+				comm[i] = n
+
+				reo = true
+
+				break
+			}
 		}
 
-		allEq = false
-		break
-	}
-
-	if allEq {
-		return left, true
-	}
-
-	// commutate the first pair of different not equal elements
-	com := make([]interface{}, len(left))
-
-	for _, pair := range lcsPairs {
-		if pair.Right == pair.Left {
-			continue
+		if !reo {
+			return left, false
 		}
-
-		com[pair.Left] = left[pair.Right]
-		com[pair.Right] = left[pair.Left]
-
-		break
 	}
 
-	for i, v := range com {
-		if v != nil {
-			continue
+	return comm, true
+}
+
+func alignLeftRightMapPossible(l map[string]any, r map[string]any) (any, bool) {
+	if len(l) != len(r) {
+		return l, false
+	}
+
+	comm := make(map[string]any, len(l))
+
+	for lk, lv := range l {
+		if rv, ok := r[lk]; ok {
+			if reflect.DeepEqual(lv, rv) {
+				comm[lk] = lv
+
+				continue
+			}
+
+			aligned, ok := AlignLeftRightIfPossible(lv, rv)
+			if ok {
+				comm[lk] = aligned
+
+				continue
+			}
 		}
-
-		com[i] = left[i]
 	}
 
-	return com, false
+	if len(comm) == len(l) {
+		return comm, true
+	}
+
+	return l, false
 }
