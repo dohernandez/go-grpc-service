@@ -2,7 +2,6 @@ package go_grpc_service
 
 import (
 	"context"
-	"net/http"
 	"strings"
 	"testing"
 	"time"
@@ -17,9 +16,10 @@ import (
 )
 
 type BenchmarkCases struct {
-	Name string
-	Uri  string
-	Data map[string]any
+	Name         string
+	Uri          string
+	ResponseCode int
+	Data         map[string]any
 }
 
 type BenchmarkConfig struct {
@@ -74,7 +74,7 @@ func RunBenchmark(b *testing.B, ctx context.Context, cfg *BenchmarkConfig) {
 					req.SetRequestURI(requestURI)
 				},
 				func(i int, resp *fasthttp.Response) bool {
-					return resp.StatusCode() == http.StatusOK
+					return resp.StatusCode() == tt.ResponseCode
 				},
 			)
 		})
