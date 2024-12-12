@@ -1,7 +1,8 @@
 GO ?= go
 BENCH_COUNT ?= 6
 MASTER_BRANCH ?= master
-REF_NAME ?= $(shell git symbolic-ref -q --short HEAD || git describe --tags --exact-match)
+BRANCH_NAME ?= $(shell git symbolic-ref -q --short HEAD || git describe --tags --exact-match)
+REF_NAME ?= $(shell echo $(BRANCH_NAME) | sed 's|/|-|g')
 SHELL := /bin/bash
 
 ## Run benchmark and show result stats, iterations count controlled by BENCH_COUNT, default 5.
