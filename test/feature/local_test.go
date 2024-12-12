@@ -14,8 +14,6 @@ type testCase struct {
 	right []byte
 }
 
-type testCaseFunc = func(*testing.T) testCase
-
 func TestAlignLeftRightIfPossible(t *testing.T) {
 	t.Parallel()
 
@@ -60,16 +58,16 @@ func alignLeftRightDetails(t *testing.T) testCase {
 		}`),
 		right: []byte(`{
 			  "code": 400,
-			  "error": "<ignore-diff>",
+			  "error": "26ef0140-c436-4838-a271-32652c72f6f2",
 			  "message": "Bad Request",
 			  "details": [
-				  {"field": "password_hash", "description": "invalid hash"},
-				  {"field": "last_name", "description": "must not be empty"},
-				  {"field": "email", "description": "must be a valid email"},
-				  {"field": "country", "description": "must have 2 characters"},
-				  {"field": "first_name", "description": "must not be empty"}
+				  {"field":"last_name","description":"must not be empty"},
+				  {"field":"email","description":"must be a valid email"},
+				  {"field":"country","description":"must have 2 characters"},
+				  {"field":"password_hash","description":"invalid hash"},
+				  {"field":"first_name","description":"must not be empty"}
 			  ]
-			}`),
+		}`),
 	}
 }
 

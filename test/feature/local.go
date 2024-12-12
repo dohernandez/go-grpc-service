@@ -10,7 +10,6 @@ import (
 	"github.com/cucumber/godog"
 	"github.com/swaggest/assertjson/json5"
 	"reflect"
-	"sort"
 )
 
 // Local is step-driven HTTP client for application local HTTP service.
@@ -106,18 +105,6 @@ func (l *Local) alignBodyIfPossible(body []byte) ([]byte, error) {
 	return body, nil
 }
 
-func sortedKeys(m map[string]interface{}) (keys []string) {
-	keys = make([]string, 0, len(m))
-
-	for key, _ := range m {
-		keys = append(keys, key)
-	}
-
-	sort.Strings(keys)
-
-	return
-}
-
 func AlignLeftRightIfPossible(left, right any) (any, bool) {
 	if left == nil && right == nil {
 		return left, true
@@ -148,6 +135,12 @@ func AlignLeftRightIfPossible(left, right any) (any, bool) {
 		// Check if type are equals
 		if reflect.TypeOf(left) != reflect.TypeOf(right) {
 			return left, false
+		}
+
+		// Skip if left is a placeholder for ignoring diff <ignore-diff>
+		if left == "<ignore-diff>" {
+			println("AlignLeftRightIfPossible.return true")
+			return right, true
 		}
 
 		if left == right {
