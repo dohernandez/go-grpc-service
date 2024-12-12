@@ -10,14 +10,15 @@ require (
 	github.com/bool64/godogx v0.1.1
 	github.com/bool64/httpdog v0.2.1
 	github.com/bool64/httptestbench v0.1.4
+	github.com/bool64/shared v0.1.5
 	github.com/bool64/sqluct v0.2.4
 	github.com/bool64/zapctxd v1.2.0
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cucumber/godog v0.15.0
-	github.com/dohernandez/dev-grpc v0.5.0
-	github.com/dohernandez/goservicing v1.0.1
+	github.com/dohernandez/dev-grpc v0.6.0
+	github.com/dohernandez/goservicing v1.0.3
 	github.com/dohernandez/servers v0.12.1
-	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.1.0
+	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.2.0
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgerrcode v0.0.0-20240316143900-6e2875d9b438
@@ -28,10 +29,10 @@ require (
 	github.com/nhatthm/clockdog v0.2.0
 	github.com/nhatthm/go-clock v0.6.0
 	github.com/opencensus-integrations/ocsql v0.1.7
-	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.10.0
+	github.com/swaggest/assertjson v1.9.0
 	github.com/urfave/cli/v2 v2.27.5
-	github.com/valyala/fasthttp v1.57.0
+	github.com/valyala/fasthttp v1.58.0
 	go.uber.org/zap v1.27.0
 )
 
@@ -42,7 +43,6 @@ require (
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bool64/httpmock v0.1.15 // indirect
-	github.com/bool64/shared v0.1.5 // indirect
 	github.com/bufbuild/protovalidate-go v0.7.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
@@ -79,8 +79,8 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sergi/go-diff v1.3.1 // indirect
 	github.com/shurcooL/httpgzip v0.0.0-20230704072819-d1585fc322fa // indirect
+	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stoewer/go-strcase v1.3.0 // indirect
-	github.com/swaggest/assertjson v1.9.0 // indirect
 	github.com/swaggest/form/v5 v5.1.1 // indirect
 	github.com/swaggest/rest v0.2.70 // indirect
 	github.com/swaggest/swgui v1.8.2 // indirect
