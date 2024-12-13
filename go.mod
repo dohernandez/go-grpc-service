@@ -17,7 +17,7 @@ require (
 	github.com/cucumber/godog v0.15.0
 	github.com/dohernandez/dev-grpc v0.6.0
 	github.com/dohernandez/goservicing v1.0.3
-	github.com/dohernandez/servers v0.13.0
+	github.com/dohernandez/servers v0.13.2
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.2.0
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
 	github.com/jackc/pgconn v1.14.3
@@ -34,7 +34,7 @@ require (
 	github.com/urfave/cli/v2 v2.27.5
 	github.com/valyala/fasthttp v1.58.0
 	go.uber.org/zap v1.27.0
-	google.golang.org/grpc v1.68.1
+	google.golang.org/grpc v1.69.0
 )
 
 require (
