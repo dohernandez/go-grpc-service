@@ -107,7 +107,7 @@ func NewServiceLocator(cfg *Config, opts ...Option) (*Locator, error) {
 
 	var err error
 
-	l.logger = logger.InitLogger(l.config.Logger, l.config.IsDev())
+	l.logger = logger.InitLogger(l.config.Logger, false)
 	l.LoggerProvider = l.logger
 
 	// init db
@@ -124,6 +124,7 @@ func NewServiceLocator(cfg *Config, opts ...Option) (*Locator, error) {
 			// recovering from panic
 			grpcRecovery.UnaryServerInterceptor(),
 			grpcLogging.UnaryServerInterceptor(grpcInterceptorLogger(l.logger)),
+			logger.UnaryServerInterceptor(l.logger),
 		),
 	)
 
@@ -219,16 +220,16 @@ func (l *Locator) InitMetricsService(opts ...servers.Option) {
 
 // grpcInterceptorLogger adapts zapctxd logger to interceptor logger.
 func grpcInterceptorLogger(l *zapctxd.Logger) grpcLogging.Logger {
-	return grpcLogging.LoggerFunc(func(ctx context.Context, lvl grpcLogging.Level, msg string, _ ...any) {
+	return grpcLogging.LoggerFunc(func(ctx context.Context, lvl grpcLogging.Level, msg string, fields ...any) {
 		switch lvl {
 		case grpcLogging.LevelDebug:
-			l.Debug(ctx, msg)
+			l.Debug(ctx, msg, fields...)
 		case grpcLogging.LevelInfo:
-			l.Info(ctx, msg)
+			l.Info(ctx, msg, fields...)
 		case grpcLogging.LevelWarn:
-			l.Warn(ctx, msg)
+			l.Warn(ctx, msg, fields...)
 		case grpcLogging.LevelError:
-			l.Error(ctx, msg)
+			l.Error(ctx, msg, fields...)
 		default:
 			panic(fmt.Sprintf("unknown level %v", lvl))
 		}
