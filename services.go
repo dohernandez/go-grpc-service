@@ -26,6 +26,10 @@ func RunServices(ctx context.Context, l *app.Locator) error {
 		srvs = append(srvs, l.MetricsService)
 	}
 
+	if l.HealthService != nil {
+		srvs = append(srvs, l.HealthService)
+	}
+
 	if len(srvs) == 0 {
 		panic("no services to start")
 	}

@@ -43,18 +43,26 @@ func RunFeatures(t *testing.T, ctx context.Context, cfg *FeaturesConfig) {
 		t.Fatal("timeout waiting for service to start")
 	}
 
+	var healthURL string
+
+	if deps.HealthService != nil {
+		healthURL = <-deps.HealthService.AddrAssigned
+	}
+
 	defer func() {
 		// Stop the service.
 		stop()
 	}()
 
-	local := feature.NewLocal(baseRESTURL)
-
-	dbm := initDBManager(deps.Storage, cfg.Tables)
-	dbmCleaner := initDBMCleaner(dbm)
-
 	feature.RunFeatures(t, cfg.FeaturePath, func(_ *testing.T, s *godog.ScenarioContext) {
-		local.RegisterSteps(s)
+		feature.NewLocal(baseRESTURL).RegisterSteps(s)
+
+		if healthURL != "" {
+			feature.NewLocal(healthURL).RegisterSteps(s)
+		}
+
+		dbm := initDBManager(deps.Storage, cfg.Tables)
+		dbmCleaner := initDBMCleaner(dbm)
 
 		dbm.RegisterSteps(s)
 		dbmCleaner.RegisterSteps(s)
