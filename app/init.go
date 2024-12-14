@@ -154,10 +154,12 @@ func NewServiceLocator(cfg *Config, opts ...Option) (*Locator, error) {
 	return &l, nil
 }
 
-func (l *Locator) InitGRPCService(opts ...servers.Option) {
+func (l *Locator) initGRPCService(r servers.GRPCRegisterService, opts ...servers.Option) {
 	if !l.opts.grpcEnabled {
 		return
 	}
+
+	l.opts.grpcOpts = append(l.opts.grpcOpts, servers.WithRegisterService(r))
 
 	grpcOpts := append(
 		[]servers.Option{},
@@ -177,12 +179,22 @@ func (l *Locator) InitGRPCService(opts ...servers.Option) {
 	)
 }
 
-func (l *Locator) InitGRPCRestService(opts ...servers.Option) error {
+func (l *Locator) initGRPCRestService(r servers.GRPCRestRegisterService, swgJSON []byte, opts ...servers.Option) error {
 	var err error
 
 	if !l.opts.grpcRestEnabled {
 		return nil
 	}
+
+	l.opts.grpcRestOpts = append(
+		l.opts.grpcRestOpts,
+		servers.WithRegisterServiceHandler(r),
+		servers.WithDocEndpoint(l.config.ServiceName,
+			"/docs/",
+			"/docs/service.swagger.json",
+			swgJSON),
+		servers.WithVersionEndpoint(),
+	)
 
 	grpcRestOpts := append(
 		[]servers.Option{},
@@ -207,11 +219,13 @@ func (l *Locator) InitGRPCRestService(opts ...servers.Option) error {
 	return nil
 }
 
-func (l *Locator) InitMetricsService(opts ...servers.Option) {
+func (l *Locator) initMetricsService(opts ...servers.Option) {
 	// Check if metrics service is enabled.
 	if !l.opts.metricsEnabled {
 		return
 	}
+
+	l.opts.metricsOpts = append(l.opts.metricsOpts, servers.WithGRPCServer(l.GRPCService))
 
 	metricsOpts := append(
 		[]servers.Option{},
@@ -231,7 +245,7 @@ func (l *Locator) InitMetricsService(opts ...servers.Option) {
 	)
 }
 
-func (l *Locator) InitHealthCheckService(opts ...servers.Option) {
+func (l *Locator) initHealthCheckService(opts ...servers.Option) {
 	// Check if health check service is enabled.
 	if !l.opts.healthCheckEnabled {
 		return
@@ -279,26 +293,17 @@ type register interface {
 }
 
 // SetupServices sets up services (gRPC, gRPC REST, metrics, health check).
-func (l *Locator) SetupServices(r register, swgJSON []byte) error {
-	l.InitGRPCService(
-		servers.WithRegisterService(r),
-	)
+func (l *Locator) SetupServices(r register, swgJSON []byte, opts ...servers.Option) error {
+	l.initGRPCService(r, opts...)
 
-	err := l.InitGRPCRestService(
-		servers.WithRegisterServiceHandler(r),
-		servers.WithDocEndpoint(l.config.ServiceName,
-			"/docs/",
-			"/docs/service.swagger.json",
-			swgJSON),
-		servers.WithVersionEndpoint(),
-	)
+	err := l.initGRPCRestService(r, swgJSON, opts...)
 	if err != nil {
 		return err
 	}
 
-	l.InitMetricsService(servers.WithGRPCServer(l.GRPCService))
+	l.initMetricsService(opts...)
 
-	l.InitHealthCheckService()
+	l.initHealthCheckService(opts...)
 
 	return nil
 }
