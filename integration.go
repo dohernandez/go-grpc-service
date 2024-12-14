@@ -58,7 +58,7 @@ func RunFeatures(t *testing.T, ctx context.Context, cfg *FeaturesConfig) {
 		feature.NewLocal(baseRESTURL).RegisterSteps(s)
 
 		if healthURL != "" {
-			feature.NewLocal(healthURL).RegisterSteps(s)
+			feature.NewHealth(healthURL).RegisterSteps(s)
 		}
 
 		dbm := initDBManager(deps.Storage, cfg.Tables)
