@@ -20,11 +20,11 @@ func NewHealth(baseURL string) *Health {
 }
 
 func (h *Health) RegisterSteps(s *godog.ScenarioContext) {
-	s.Step(`^Probe is check$`, h.probeIsCheck)
+	s.Step(`^I check server is up and running$`, h.iCheckServerIsUpAndRunning)
 	s.Step(`^It should be up and running$`, h.itShouldBeUpAndRunning)
 }
 
-func (h *Health) probeIsCheck() error {
+func (h *Health) iCheckServerIsUpAndRunning() error {
 	if err := h.CheckUnexpectedOtherResponses(); err != nil {
 		return fmt.Errorf("unexpected other responses for previous request: %w", err)
 	}

@@ -247,14 +247,6 @@ func (l *Locator) InitHealthCheckService(opts ...servers.Option) {
 		opts...,
 	)
 
-	if l.GRPCService != nil {
-		healthOpts = append(healthOpts, servers.WithGRPC(l.GRPCService))
-	}
-
-	if l.GRPCRestService != nil {
-		healthOpts = append(healthOpts, servers.WithGRPCRest(l.GRPCRestService))
-	}
-
 	l.HealthService = servers.NewHealthCheck(
 		servers.Config{
 			Name: "health " + l.config.ServiceName,
@@ -279,6 +271,36 @@ func grpcInterceptorLogger(l *zapctxd.Logger) grpcLogging.Logger {
 			panic(fmt.Sprintf("unknown level %v", lvl))
 		}
 	})
+}
+
+type register interface {
+	servers.GRPCRegisterService
+	servers.GRPCRestRegisterService
+}
+
+// SetupServices sets up services (gRPC, gRPC REST, metrics, health check).
+func (l *Locator) SetupServices(r register, swgJSON []byte) error {
+	l.InitGRPCService(
+		servers.WithRegisterService(r),
+	)
+
+	err := l.InitGRPCRestService(
+		servers.WithRegisterServiceHandler(r),
+		servers.WithDocEndpoint(l.config.ServiceName,
+			"/docs/",
+			"/docs/service.swagger.json",
+			swgJSON),
+		servers.WithVersionEndpoint(),
+	)
+	if err != nil {
+		return err
+	}
+
+	l.InitMetricsService(servers.WithGRPCServer(l.GRPCService))
+
+	l.InitHealthCheckService()
+
+	return nil
 }
 
 func (l *Locator) Close() error {
