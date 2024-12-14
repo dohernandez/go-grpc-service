@@ -64,6 +64,15 @@ func WithMetrics(opts ...servers.Option) Option {
 	}
 }
 
+// WithHealthCheck sets up health check server.
+func WithHealthCheck(opts ...servers.Option) Option {
+	return func(l *Locator) {
+		l.opts.healthCheckEnabled = true
+
+		l.opts.healthOpts = append(l.opts.healthOpts, opts...)
+	}
+}
+
 type locatorOptions struct {
 	postgresEnabled bool
 
@@ -75,6 +84,9 @@ type locatorOptions struct {
 
 	metricsEnabled bool
 	metricsOpts    []servers.Option
+
+	healthCheckEnabled bool
+	healthOpts         []servers.Option
 }
 
 // Locator defines application resources.
@@ -93,6 +105,7 @@ type Locator struct {
 	GRPCService     *servers.GRPC
 	GRPCRestService *servers.GRPCRest
 	MetricsService  *servers.Metrics
+	HealthService   *servers.HealthCheck
 }
 
 // NewServiceLocator creates application locator.
@@ -215,6 +228,38 @@ func (l *Locator) InitMetricsService(opts ...servers.Option) {
 			Name: "metrics " + l.config.ServiceName,
 		},
 		metricsOpts...,
+	)
+}
+
+func (l *Locator) InitHealthCheckService(opts ...servers.Option) {
+	// Check if health check service is enabled.
+	if !l.opts.healthCheckEnabled {
+		return
+	}
+
+	healthOpts := append(
+		[]servers.Option{},
+		l.opts.healthOpts...,
+	)
+
+	healthOpts = append(
+		healthOpts,
+		opts...,
+	)
+
+	if l.GRPCService != nil {
+		healthOpts = append(healthOpts, servers.WithGRPC(l.GRPCService))
+	}
+
+	if l.GRPCRestService != nil {
+		healthOpts = append(healthOpts, servers.WithGRPCRest(l.GRPCRestService))
+	}
+
+	l.HealthService = servers.NewHealthCheck(
+		servers.Config{
+			Name: "health " + l.config.ServiceName,
+		},
+		healthOpts...,
 	)
 }
 
