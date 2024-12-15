@@ -9,6 +9,7 @@ require (
 	github.com/bool64/dev v0.2.37
 	github.com/bool64/godogx v0.1.1
 	github.com/bool64/httpdog v0.2.1
+	github.com/bool64/httpmock v0.1.15
 	github.com/bool64/httptestbench v0.1.4
 	github.com/bool64/shared v0.1.5
 	github.com/bool64/sqluct v0.2.4
@@ -17,10 +18,9 @@ require (
 	github.com/cucumber/godog v0.15.0
 	github.com/dohernandez/dev-grpc v0.6.0
 	github.com/dohernandez/goservicing v1.0.3
-	github.com/dohernandez/servers v0.14.0
+	github.com/dohernandez/servers v0.15.1
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.2.0
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
-	github.com/hellofresh/health-go/v5 v5.5.3
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgerrcode v0.0.0-20240316143900-6e2875d9b438
 	github.com/jackc/pgx/v5 v5.7.1
@@ -44,7 +44,6 @@ require (
 	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/bool64/httpmock v0.1.15 // indirect
 	github.com/bufbuild/protovalidate-go v0.8.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
@@ -60,6 +59,7 @@ require (
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
 	github.com/hashicorp/go-memdb v1.3.4 // indirect
 	github.com/hashicorp/golang-lru v1.0.2 // indirect
+	github.com/hellofresh/health-go/v5 v5.5.3 // indirect
 	github.com/iancoleman/orderedmap v0.3.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
@@ -102,6 +102,7 @@ require (
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
+	golang.org/x/time v0.0.0-20191024005414-555d28b269f0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20241206012308-a4fef0638583 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241206012308-a4fef0638583 // indirect
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.5.1 // indirect

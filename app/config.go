@@ -14,8 +14,10 @@ type Config struct {
 	ServiceName    string `envconfig:"SERVICE_NAME"`
 	AppGRPCPort    int    `envconfig:"APP_GRPC_PORT" default:"8000"`
 	AppRESTPort    int    `envconfig:"APP_REST_PORT" default:"8080"`
-	AppMetricsPort int    `envconfig:"APP_METRICS_PORT" default:"8080"`
-	AppHealthPort  int    `envconfig:"APP_HEALTH_PORT" default:"8081"`
+	AppMetricsPort int    `envconfig:"APP_METRICS_PORT" default:"8010"`
+	AppHealthPort  int    `envconfig:"APP_HEALTH_PORT" default:"8001"`
+
+	RateLimiter config.RateLimiter `split_words:"true"`
 
 	Database database.Config
 	Logger   logger.Config

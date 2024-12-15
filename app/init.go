@@ -136,10 +136,27 @@ func NewServiceLocator(cfg *Config, opts ...Option) (*Locator, error) {
 		servers.WithChainUnaryInterceptor(
 			// recovering from panic
 			grpcRecovery.UnaryServerInterceptor(),
-			grpcLogging.UnaryServerInterceptor(grpcInterceptorLogger(l.logger)),
+			grpcLogging.UnaryServerInterceptor(
+				grpcInterceptorLogger(l.logger),
+				grpcLogging.WithLogOnEvents(
+					grpcLogging.FinishCall,
+				),
+			),
 			logger.UnaryServerInterceptor(l.logger),
 		),
 	)
+
+	if l.config.RateLimiter.Enabled {
+		limiter := servers.NewPerClientRateLimiter(
+			l.config.RateLimiter.Client.RequestsPerSec,
+			l.config.RateLimiter.Client.BurstLimit,
+		)
+
+		l.opts.grpcOpts = append(
+			l.opts.grpcOpts,
+			servers.WithGRPCRateLimiter(limiter),
+		)
+	}
 
 	if l.opts.metricsEnabled {
 		l.opts.grpcOpts = append(
