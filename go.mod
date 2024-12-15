@@ -18,7 +18,7 @@ require (
 	github.com/cucumber/godog v0.15.0
 	github.com/dohernandez/dev-grpc v0.6.0
 	github.com/dohernandez/goservicing v1.0.3
-	github.com/dohernandez/servers v0.15.1
+	github.com/dohernandez/servers v0.15.2
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.2.0
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
 	github.com/jackc/pgconn v1.14.3

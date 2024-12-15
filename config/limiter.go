@@ -14,7 +14,7 @@ type RateLimiter struct {
 // Limiter defines rate limiting configuration.
 type Limiter struct {
 	// RequestsPerSec number of requests per second.
-	RequestsPerSec float64 `default:"10000"`
+	RequestsPerSec float64 `split_words:"true" default:"10000"`
 	// BurstLimit burst limit.
-	BurstLimit int `default:"1000"`
+	BurstLimit int `split_words:"true" default:"100"`
 }
